@@ -1,0 +1,6 @@
+"0","# Define index tickers and matching country names"
+"0","index_info <- tibble("
+"0","  Country = c(""United States"", ""Germany"", ""China"", ""United Kingdom"", ""Canada"", ""Japan""),"
+"0","  Ticker = c(""^GSPC"", ""^GDAXI"", ""000001.SS"", ""^FTSE"", ""^GSPTSE"", ""^N225"")"
+"0",")"
+"0",""

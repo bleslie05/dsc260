@@ -1,0 +1,7 @@
+"0","library(DBI)"
+"0","library(RSQLite)"
+"0",""
+"0","con <- dbConnect(SQLite(), ""employees.db"")"
+"0",""
+"0","connection <- con"
+"0",""

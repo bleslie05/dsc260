@@ -1,0 +1,8 @@
+"0","ggplot(df, aes( x = G, y = C)) +"
+"0","  geom_point(color = ""grey"", alpha = 0.6) +"
+"0","  geom_point(data = df %>% filter(Selected == ""Selected""), color = ""purple"", alpha = 0.6) +"
+"0","  geom_smooth(method = ""lm"", se = FALSE, aes(group = Neighborhood), color = ""grey"") +"
+"0","  geom_smooth(data = df %>% filter(Selected == ""Selected""), aes(x = G, y = C), method = ""lm"") +"
+"0","  labs("
+"0","    x = ""grandparent Education"", "
+"0","    y = ""Grandchild Education"")"

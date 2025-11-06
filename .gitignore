@@ -1,0 +1,10 @@
+*
+!.gitignore
+
+!*.html
+!*.pdf
+!*.qmd
+!*.R
+!*.csv
+
+!*/

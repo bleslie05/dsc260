@@ -1,0 +1,8 @@
+"0","# Filter and calculate percent change from Jan 17, 2020"
+"0","indexes <- indexes %>%"
+"0","  filter(date >= as.Date(""2025-01-20"")) %>%"
+"0","  group_by(Country) %>%"
+"0","  mutate(Baseline = close[date == as.Date(""2025-01-20"")][1]) %>%"
+"0","  ungroup() %>%"
+"0","  mutate(Pct_Change = 100 * (close - Baseline) / Baseline)"
+"0",""

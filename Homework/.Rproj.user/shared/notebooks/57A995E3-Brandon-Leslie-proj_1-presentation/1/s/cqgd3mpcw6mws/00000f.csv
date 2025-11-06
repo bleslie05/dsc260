@@ -1,0 +1,5 @@
+"0","library(tidyverse)"
+"0","library(tidymodels)"
+"0","library(tinytex)"
+"0","library(knitr)"
+"0","power <- read_csv(""/Users/blove/Downloads/DSC-260/Proj1/data/PowerRaw.csv"")"

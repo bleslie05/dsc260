@@ -1,0 +1,5 @@
+"0","# Pull index data since Jan 1, 2020"
+"0","indexes <- index_info %>%"
+"0","  mutate(Data = map(Ticker, ~ tq_get(.x, from = ""2020-01-01"", get = ""stock.prices""))) %>%"
+"0","  unnest(Data)"
+"0",""

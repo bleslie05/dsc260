@@ -1,0 +1,3 @@
+"0","myseries %>% "
+"0","  ACF(Turnover) %>% "
+"0","  autoplot()"

@@ -1,0 +1,174 @@
+---
+title: "Homework 3"
+author: "Brandon Leslie"
+format: pdf
+editor: visual
+---
+
+# Forecasting Principles and Practice
+
+```{r}
+library(tidyverse)
+library(tidymodels)
+library(USgas)
+library(scales)
+library(fpp3)
+library(tsibbledata)
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+## Q4: US Gas
+
+### Tsibble
+
+```{r}
+tsibble1 <- us_total %>% 
+  as_tsibble(
+    key = state,
+    index = year
+  )
+glimpse(tsibble1)
+```
+
+### Graph
+
+```{r}
+
+NewEngland = c("Maine", "Vermont", "New Hampshire", "Massachusetts", "Connecticut", "Rhode Island")
+tsibble1 %>%
+  filter(state %in% NewEngland) %>% 
+  ggplot(aes(year, y)) +
+  geom_point() +
+  geom_smooth(se = FALSE, method = "loess", color = "red") +
+  scale_y_continuous(labels = label_number(scale = 0.00001, suffix = "K")) +
+  scale_x_continuous(breaks = breaks_width(5)) +
+  labs(
+    title = "Anual Natural Gas Consumption",
+    subtitle = "By state",
+    y = "Gas in gallons by Millions",
+    x = "Year"
+  ) +
+  facet_wrap(~state) +
+  theme_bw()
+  
+```
+
+## Q7: Australian Retail Data
+
+```{r}
+set.seed(84625314)
+myseries <- aus_retail %>%
+  as_tsibble() %>% 
+  filter(`Series ID` == sample(unique(aus_retail$`Series ID`),1)) %>%
+  as_tsibble(index = Month)
+
+
+autoplot(myseries)
+gg_season(myseries)
+gg_subseries(myseries)
+gg_lag(myseries)
+myseries %>% 
+  ACF(Turnover) %>% 
+  autoplot()
+  
+```
+
+**Can you spot any seasonality, cyclicity and trend? What do you learn about the series?**
+
+-   **Seasonality**
+    -   There seems to be an increase in turnovers in late fall/early winter, as-well as a peak in the month of march.
+-   **Cyclicity**
+    -   In the autoplot graph, cyclicity is represented through repeated sudden peaks, then a dip, with.a short after-peak, followed by a slight increase, then this process repeats to another sudden peak.
+-   **Trends**
+    -   As we progress through time, we can see a positive trend as years & months go by.
+
+## Q8: "Total Private" Timeseries
+
+```{r}
+explore_ts <- function(data, index, value) {
+  index_sym <- rlang::ensym(index)
+  value_sym <- rlang::ensym(value)
+
+  ts_data <- data %>%
+    filter(!is.na(!!value_sym)) %>%
+    as_tsibble(index = !!index_sym)
+
+  print(autoplot(ts_data, !!value_sym) + ggtitle("Autoplot"))
+  print(gg_season(ts_data, !!value_sym) + ggtitle("Seasonal Plot"))
+  print(gg_subseries(ts_data, !!value_sym) + ggtitle("Subseries Plot"))
+  print(gg_lag(ts_data, !!value_sym) + ggtitle("Lag Plot"))
+  print(ts_data |> ACF(!!value_sym) |> autoplot() + ggtitle("ACF Plot"))
+}
+
+
+```
+
+```{r}
+# 1. Total Private Employed
+private_employed <- us_employment |> filter(Title == "Total Private")
+explore_ts(private_employed, Month, Employed)
+
+# 2. Bricks
+explore_ts(aus_production, Quarter, Bricks)
+
+
+# 4. H02 Cost
+h02 <- PBS |> filter(ATC2 == "H02") |> summarise(Cost = sum(Cost))
+explore_ts(h02, Month, Cost)
+
+# 5. Barrels
+explore_ts(us_gasoline, Week, Barrels)
+
+```
+
+### Summary of Time Series Features
+
+| Series      | Seasonality | Cyclicity | Trend    | Unusual Years     |
+|-------------|-------------|-----------|----------|-------------------|
+| Retail (AU) | Strong      | Light     | Upward   | 2020              |
+| Employment  | Mild        | Clear     | Upward   | 2009, 2020        |
+| Bricks      | Strong      | Some      | Downward | 2008–2010         |
+| Hare        | None        | Strong    | Cyclical | Every 10 years    |
+| H02 Cost    | Mild        | Mild      | Upward   | Occasional spikes |
+| Gasoline    | Strong      | Some      | Stable   | 2020              |
+
+## Q9: Time Plot Matching
+
+Daily Temperature of a Cow = C
+
+Monthly Accidental Deaths = A
+
+Monthly Air Passengers = D
+
+Annual Mink Trappings = B
+
+## Q11: Google Closing Stock Prices
+
+```{r}
+dgoog <- gafa_stock |>
+  filter(Symbol == "GOOG", year(Date) >= 2018) |>
+  mutate(trading_day = row_number()) |>
+  update_tsibble(index = trading_day, regular = TRUE) |>
+  mutate(diff = difference(Close))
+
+dgoog
+```
+
+-   **Why was it necessary to re-index the tsibble?**
+
+    1.  We had to re-index the *tsibble* because we wanted the **Daily** changes
+
+-   **Plot these differences and their ACF.**
+```{r}
+autoplot(dgoog, diff)
+
+```
+
+
+
+1.  **Do the changes in the stock prices look like white noise?**
+
+    1.  Yes, the changes in stock prices look like white noise.

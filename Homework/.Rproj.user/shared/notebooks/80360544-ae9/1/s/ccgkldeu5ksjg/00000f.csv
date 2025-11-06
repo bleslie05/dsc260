@@ -1,0 +1,5 @@
+"0","USArrests <- USArrests |> mutate(state = rownames(USArrests))"
+"0",""
+"0","arrests_pca <- prcomp(USArrests %>% select( -state),"
+"0","                    center = TRUE, scale. = TRUE)"
+"0","head(USArrests)"

@@ -1,0 +1,88 @@
+---
+title: "AE-10"
+author: "Brandon Leslie"
+format: pdf
+editor: visual
+---
+
+
+```{r}
+library(tidyverse)
+library(pls)
+library(tidymodels)
+```
+
+
+
+```{r}
+USArrests <- USArrests |> mutate(state = rownames(USArrests))
+
+arrests_pca <- prcomp(USArrests %>% select( -state),
+                    center = TRUE, scale. = TRUE)
+head(USArrests)
+```
+
+```{r}
+arrests_pca
+```
+
+```{r}
+arrests_pca$x |> head()
+```
+
+```{r}
+pca_rec <- recipe(state ~., data = USArrests) %>%
+  step_normalize(all_predictors()) %>%
+  step_pca(all_predictors())
+
+pca_prep <- prep(pca_rec)
+```
+
+```{r}
+tidied_pca <- tidy(pca_prep, 2)
+tidied_pca
+```
+
+```{r}
+arrests_prep <- pca_rec |> prep() %>% bake(USArrests)
+arrests_prep |> head()
+```
+
+```{r}
+arrests_prep %>% 
+  ggplot(aes(PC1, PC2)) + 
+  geom_text(aes(label = state)) +
+  geom_point()
+```
+
+```{r}
+tidied_pca %>% 
+  pivot_wider(names_from = component, values_from = value) %>% 
+  select(-id)
+```
+
+```{r}
+tidy_pca_wide <- tidied_pca %>% 
+  pivot_wider(names_from = component, values_from = value) %>% 
+  select(-id)
+```
+
+```{r}
+
+arrests_prep %>% 
+  ggplot(aes(PC1, PC2)) + 
+  geom_text(aes(label = state)) +
+  geom_point(data = tidy_pca_wide)
+
+```
+
+```{r}
+
+arrests_prep %>% 
+  ggplot(aes(PC1, PC2)) +
+  geom_text(aes(label = state), check_overlap = TRUE, hjust = "inward") +
+  geom_segment(data = tidy_pca_wide, aes(x = 0, y = 0, xend = 2*PC1, yend = 2 *PC2), 
+               arrow = arrow(), color = "blue") +
+  geom_text(data = tidy_pca_wide, aes(x = 2.3 *PC1, y = 1.8*PC2, label = terms, color = "blue"))
+
+```

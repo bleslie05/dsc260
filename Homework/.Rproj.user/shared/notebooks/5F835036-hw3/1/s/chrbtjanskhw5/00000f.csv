@@ -1,0 +1,8 @@
+"0","set.seed(84625314)"
+"0","myseries <- aus_retail %>%"
+"0","  as_tsibble() %>% "
+"0","  filter(`Series ID` == sample(unique(aus_retail$`Series ID`),1)) %>%"
+"0","  as_tsibble(index = Month)"
+"0",""
+"0",""
+"0","autoplot(myseries)"

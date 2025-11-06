@@ -1,0 +1,117 @@
+---
+title: "AE-11"
+author: "Brandon Leslie"
+format: pdf
+editor: visual
+---
+
+```{r include = FALSE}
+library(gapminder)
+library(tidyverse)
+library(tidymodels)
+```
+
+# First Model
+
+```{r}
+gapminder %>% 
+  filter(
+    year %in% c(1952, 1967, 1982, 1997),
+    continent != "Oceania"
+  ) %>% 
+  ggplot(aes(x = log(gdpPercap), y = lifeExp)) +
+    geom_smooth(color = "blue", method = "lm") +
+    geom_point(color = "blue", size = 0.5) +
+    facet_grid(year ~ continent) +
+    theme_bw()
+      
+```
+
+```{r}
+lm_data <- gapminder |>
+  nest(data = -c(continent, year))
+
+lm_data
+```
+
+# AE-11 \| A
+
+```{r}
+gapminder %>% group_by(continent, year) %>% 
+  nest() %>% 
+  mutate(model = map(data , ~lm(lifeExp ~log(gdpPercap), data = .x)))
+
+#anonymous function example 
+```
+
+# AE-11 \| B
+
+```{r}
+gapminder %>% 
+  group_by(continent, year) %>% 
+  nest() %>% 
+  mutate(
+    model = map(data , ~lm(lifeExp ~ log(gdpPercap), data = .x)),
+    tidy_out = map(model, tidy)
+  )
+
+```
+
+# AE-11 \| C
+
+```{r}
+
+gapminder %>%
+  group_by(continent, year) %>%
+  nest() %>%
+  mutate(
+    model = map(data , ~lm(lifeExp ~ log(gdpPercap), data = .x)),
+    tidy_out = map(model, tidy)
+  ) %>%
+  unnest(tidy_out)
+
+```
+
+# AE-11 \| D
+
+```{r}
+gapminder %>%
+  filter(continent != "Oceania") %>%
+  group_by(continent, year) %>%
+  nest() %>%
+  mutate(
+    model = map(data, ~lm(lifeExp ~ log(gdpPercap), data = .x)),
+    tidy_out = map(model, tidy)
+  ) %>%
+  unnest(tidy_out) %>%
+  filter(term != "(Intercept)") %>%
+  select(-data, -model)
+```
+
+# AE-11 \| E-F
+
+```{r}
+gapminder %>%
+  filter(continent != "Oceania") %>%
+  group_by(continent, year) %>%
+  nest() %>%
+  mutate(
+    model = map(data, ~lm(lifeExp ~ log(gdpPercap), data = .x)),
+    tidy_out = map(model, tidy)
+  ) %>%
+  unnest(tidy_out) %>%
+  filter(term == "log(gdpPercap)") %>%
+  mutate(
+    conf.low = estimate - 1.96 * std.error,
+    conf.high = estimate + 1.96 * std.error
+  ) %>%
+  ggplot(aes(x = year, y = estimate, color = continent)) +
+    geom_pointrange(aes(ymin = conf.low, ymax = conf.high), fatten = 2) +
+    labs(
+      title = "Effect of GDP per capita on life expectancy",
+      y = "Coefficient of log GDP per capita",
+      x = "Year"
+    ) +
+    theme_minimal(base_size = 14)
+
+```

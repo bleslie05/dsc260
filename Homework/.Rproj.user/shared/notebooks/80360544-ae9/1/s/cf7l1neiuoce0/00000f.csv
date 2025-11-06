@@ -1,0 +1,6 @@
+"0",""
+"0","arrests_prep %>% "
+"0","  ggplot(aes(PC1, PC2)) + "
+"0","  geom_text(aes(label = state)) +"
+"0","  geom_point(data = tidy_pca_wide)"
+"0",""

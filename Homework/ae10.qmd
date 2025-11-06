@@ -1,0 +1,78 @@
+---
+title: "AE10 - Uncertainty"
+author: "Brandon Leslie"
+format: pdf
+editor: visual
+---
+
+```{r}
+#| eval: true
+#| message: false
+
+# load packages
+library(tidyverse)
+library(tidymodels)
+library(distributional)
+library(ggdist)
+library(readr)
+
+everest <- read_csv("~/Downloads/DSC-260/csv_data/everest.csv")
+
+# set theme for ggplot2
+ggplot2::theme_set(ggplot2::theme_minimal(base_size = 16))
+```
+
+# AE10-A
+
+```{r}
+
+set.seed(344567)
+
+pop <- rexp(10000, rate = 1)
+
+pop_mean <- mean(pop)
+
+pop_sd <- sd(pop)
+
+hist(pop, breaks = 50, col = "lightblue", main = "pop Distribution", xlab = "Value")
+abline(v = pop_mean, col = "red", lwd = 2)
+legend("topright", legend = paste("Mean =", round(pop_mean, 2)), col = "red", lwd = 2)
+
+sample1 <- sample(pop, size = 40)
+sample1_mean <- mean(sample1)
+sample1_sd <- sd(sample1)
+
+cat("Sample mean:", sample1_mean, "\nSample SD:", sample1_sd, "\n\n")
+
+sample_means <- replicate(1000, {
+  s <- sample(pop, size = 40)
+  mean(s)
+})
+
+sampling_mean <- mean(sample_means)
+sampling_sd <- sd(sample_means)
+
+hist(sample_means, breaks = 40, col = "lightgreen", main = "Sampling Distribution of the Mean", xlab = "Sample Mean")
+abline(v = sampling_mean, col = "blue", lwd = 2)
+abline(v = pop_mean, col = "red", lwd = 2, lty = 2)
+legend("topright", legend = c(paste("Sample Means Mean =", round(sampling_mean, 2)),
+                              paste("pop Mean =", round(pop_mean, 2))),
+       col = c("blue", "red"), lwd = 2, lty = c(1, 2))
+
+
+```
+
+
+
+# AE10-B
+```{r}
+
+
+quantile(everest$highpoint_metres, probs = c(0.025, 0.975), na.rm = TRUE)
+t.test(highpoint_metres ~ sex, data = everest, conf.level = 0.95)
+
+
+```
+
+
+The last part won't run for some reason, and it's driving me insane.

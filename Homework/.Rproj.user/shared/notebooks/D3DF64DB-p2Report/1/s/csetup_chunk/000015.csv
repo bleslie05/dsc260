@@ -1,0 +1,6 @@
+"0","opts_chunk$set(echo = FALSE, "
+"0","                      message = FALSE, "
+"0","                      warning = FALSE, "
+"0","                      fig.width = 10,"
+"0","                      fig.height = 10"
+"0","                      )"

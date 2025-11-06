@@ -1,0 +1,54 @@
+---
+title: "AE-13"
+author: "Brandon Leslie"
+format: pdf
+editor: visual
+---
+
+```{r}
+library(tidyverse)
+library(tidymodels)
+library(tidyquant)
+
+```
+
+```{r}
+index_info <- tibble(
+  Country = c("United States", "Germany", "China", "United Kingdom", "Canada", "Japan"),
+  Ticker = c("^GSPC", "^GDAXI", "000001.SS", "^FTSE", "^GSPTSE", "^N225")
+)
+
+```
+
+```{r}
+indexes <- index_info %>%
+  mutate(Data = map(Ticker, ~ tq_get(.x, from = "2020-01-01", get = "stock.prices"))) %>%
+  unnest(Data)
+
+```
+
+```{r}
+indexes <- indexes %>%
+  filter(date >= as.Date("2025-01-20")) %>%
+  group_by(Country) %>%
+  mutate(Baseline = close[date == as.Date("2025-01-20")][1]) %>%
+  ungroup() %>%
+  mutate(Pct_Change = 100 * (close - Baseline) / Baseline)
+
+```
+
+```{r}
+ggplot(indexes, aes(x = date, y = Pct_Change, color = Country)) +
+  geom_line(size = 1.1) +
+  theme_minimal(base_size = 14) +
+  scale_y_continuous(labels = scales::percent_format(scale = 1)) +
+  labs(
+    title = "Major Global Stock Indexes Since Jan 17, 2020",
+    y = "Percent Change",
+    x = NULL,
+    caption = "Source: Yahoo Finance via tidyquant"
+  ) +
+  theme(legend.position = "right")
+
+```
+

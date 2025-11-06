@@ -1,0 +1,64 @@
+---
+title: "grandparent"
+author: "Brandon Leslie"
+format: pdf
+editor: visual
+---
+
+```{r}
+library(tidyverse)
+library(boom)
+library(daggedy)
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+```{r}
+N <- 200
+b_GP <- 1
+b_GC <- 0.3
+b_PC <- 1
+b_U <- 2
+
+### Now with positive effect Grandparents, no U
+U <- 2*rbinom(N, 1, prob = 0.5) - 1
+G <- rnorm(N)
+P <- rnorm(N, b_GP*G)
+C <- rnorm(N, b_PC*P + b_GC*G)
+
+df <- data.frame(C = C, P = P, G = G, U = U)
+
+lm(C ~ P + G, df ) %>%
+  tidy() %>% 
+  filter(term != "(Intercept)") %>% 
+  ggplot(aes(x = estimate, y = term)) +
+  geom_point() +
+  geom_errorbar(aes(xmin = estimate - 2*std.error, 
+                    xmax = estimate + 2*std.error),
+                width = 0.1) +
+  geom_vline(xintercept = 0, linetype = "dashed")
+```
+
+
+
+```{r, fig.width = 4, fig.height = 1.25}
+U <- 2*rbinom(N, 1, prob = 0.5) - 1
+G <- rnorm(N)
+P <- rnorm(N, b_GP*G + b_U*U)
+C <- rnorm(N, b_PC*P + b_GC + b_U*U )
+
+df <- data.frame(C = C, P = P, G = G, U = U) %>% 
+  mutate(pct = quantile(P, .45) < P  & P < quantile(P, .55) )
+
+lm(C ~ P + G, df ) %>%
+  tidy() %>% 
+  filter(term != "(Intercept)") %>% 
+  ggplot(aes(x = estimate, y = term)) +
+  geom_point() +
+  geom_errorbar(aes(xmin = estimate - 2*std.error, 
+                    xmax = estimate + 2*std.error),
+                width = 0.1) +
+  geom_vline(xintercept = 0, linetype = "dashed")
+```

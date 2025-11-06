@@ -1,0 +1,12 @@
+"0","library(tidyverse)"
+"0","library(pls)"
+"2","
+Attaching package: ‘pls’
+
+"
+"2","The following object is masked from ‘package:stats’:
+
+    loadings
+
+"
+"0","library(tidymodels)"

@@ -1,0 +1,22 @@
+"0",""
+"0","ggplot(data = arrests_prep, aes(x = PC1, y = PC2)) +"
+"0","  geom_text(aes(label = state)) +"
+"0","  geom_point(data = arrests_prep, color = ""black"") +"
+"0","  geom_segment(data = tidy_pca_wide,"
+"0","               aes(x = 0, y = 0, xend = PC1, yend = PC2),"
+"0","               arrow = arrow(length = unit(0.2, ""cm"")),"
+"0","               color = ""red"") +"
+"0","  geom_text(data = tidy_pca_wide,"
+"0","            aes(x = PC1, y = PC2, label = variable),"
+"0","            color = ""red"","
+"0","            vjust = 1.5) +"
+"0","  "
+"0","  theme_minimal() +"
+"0","  labs(x = ""PC1"", y = ""PC2"")"
+"1","[1m[33mError[39m in `geom_text()`:[22m
+[38;5;232m[33m![38;5;232m Problem while computing aesthetics.
+[36mℹ[38;5;232m Error occurred in the 4th layer.[39m
+[1mCaused by error:[22m
+[33m![39m object 'variable' not found
+[90mRun `]8;;x-r-run:rlang::last_trace()rlang::last_trace()]8;;` to see where the error occurred.[39m
+"

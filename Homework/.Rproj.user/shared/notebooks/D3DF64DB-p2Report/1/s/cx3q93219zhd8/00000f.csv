@@ -1,0 +1,6 @@
+"0","quit"
+"0","#Loading in data from directory"
+"0","stocks <- read_csv(""~/PycharmProjects/Project2_DSC260/stocks.csv"")"
+"0","tickers <- unique(stocks$Ticker)"
+"0","metrics <- unique(stocks$Metric)"
+"0","raw <- read_csv(""~/PycharmProjects/Project2_DSC260/unclean_stocks.csv"")"
