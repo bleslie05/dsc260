@@ -2,10 +2,10 @@
 
 **University of New England (UNE)**  
 **Student:** Brandon Leslie  
-**Instructor:** [Instructor Name]  
+**Instructor:** [Michael Arciero]  
 **Language:** R / Quarto  
 **Environment:** RStudio / Posit Cloud  
-**Semester:** Fall 2025  
+**Semester:** Spring 2026  
 
 ---
 
