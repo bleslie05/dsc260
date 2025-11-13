@@ -9,17 +9,17 @@
 
 ---
 
-## 📘 Overview
+## Overview
 
 This repository contains my coursework and reference materials from **DSC-260: Data Visualization and Modeling**.  
 All **Applied Exercises (AE)** and **Homework (HW)** files represent *my own student work*.  
-All other files (unlabeled `.R`, `.qmd`, `.csv`, etc.) are **instructor-provided examples or starter code** used for reference and learning.  
+All other files (unlabeled `.R`, `.qmd`, `.csv`, etc.) are **instructor-provided examples or starter code** used for reference and learning. 
 
 Work in this repository focuses on reproducible data visualization, modeling, and statistical analysis using **R**, **tidyverse**, and **tidymodels**.
 
 ---
 
-## 🧩 Repository Contents
+## Repository Contents
 
 | File | Description | Authorship |
 |------|--------------|-------------|
@@ -43,7 +43,7 @@ Work in this repository focuses on reproducible data visualization, modeling, an
 
 ---
 
-## 🧠 Topics Covered
+## Topics Covered
 
 - Data visualization with **ggplot2**, `geom_*`, `facet_*`, and scales  
 - Data wrangling using **dplyr**, **tidyr**, **stringr**, **purrr**  
@@ -55,7 +55,7 @@ Work in this repository focuses on reproducible data visualization, modeling, an
 
 ---
 
-## ⚙️ Tools and Packages
+## Tools and Packages
 
 - **Core:** `tidyverse`, `tidymodels`, `broom`, `readr`, `lubridate`  
 - **Visualization:** `ggplot2`, `scales`, `ggthemes`, `patchwork`  
@@ -65,7 +65,7 @@ Work in this repository focuses on reproducible data visualization, modeling, an
 
 ---
 
-## 🧾 Academic Integrity Notice
+## Academic Integrity Notice
 
 This repository includes both **student-authored coursework** and **instructor-provided examples** used during DSC-260 instruction.  
 All work is included for **educational and portfolio purposes only**.  
@@ -73,7 +73,7 @@ No instructor materials should be redistributed or resubmitted as original stude
 
 ---
 
-## 📈 Skills Demonstrated
+## Skills Demonstrated
 
 - Advanced data visualization design and analysis  
 - Regression, classification, and forecasting  
@@ -84,7 +84,7 @@ No instructor materials should be redistributed or resubmitted as original stude
 
 ---
 
-## 🌐 Contact
+## Contact
 
 **Brandon Leslie**  
 University of New England — Data Science Major  
